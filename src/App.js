@@ -5,6 +5,9 @@ import './App.css';
 import {Provider} from 'react-redux'
 import configureStore from './store/configureStore'
 
+//import Index
+import Index from './containers/index'
+
 const store = configureStore();
 
 class App extends Component {
@@ -12,7 +15,7 @@ class App extends Component {
         return (
             <Provider store={store}>
                 <div className="App">
-
+                    <Index/>
                 </div>
             </Provider>
         );
