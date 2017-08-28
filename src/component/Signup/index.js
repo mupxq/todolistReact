@@ -16,7 +16,7 @@ class RegistrationForm extends React.Component {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
+                this.props.signupHandle(values);
             }
         });
     };
@@ -73,7 +73,7 @@ class RegistrationForm extends React.Component {
                     label="E-mail"
                     hasFeedback
                 >
-                    {getFieldDecorator('email', {
+                    {getFieldDecorator('userEmail', {
                         rules: [{
                             type: 'email', message: 'The input is not valid E-mail!',
                         }, {

@@ -12,6 +12,8 @@ import {connect} from 'react-redux'
 
 //import containers
 import LoginAndSignupContainer from './loginAndSignUp/index'
+import AccountContainer from './account/index'
+import ToDoList from './account/subPage/toDoList'
 
 class Index extends React.Component{
 
@@ -35,6 +37,8 @@ class Index extends React.Component{
                 <BrowserRouter>
                     <div>
                         <Route exact={true} path="/" component={login}/>
+                        <Route exact={true} path="/account" component={AccountContainer}/>
+                        <Route exact={true} path="/newList" component={ToDoList}/>
                     </div>
                 </BrowserRouter>
             </div>

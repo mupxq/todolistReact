@@ -32,7 +32,7 @@ function callback(key) {
 class LoginAndSignup extends React.Component {
 
 
-    // Receive user data
+    // Receive user login data
     loginHandle(values){
         const action = this.props.userInfoActions;
 
@@ -49,6 +49,11 @@ class LoginAndSignup extends React.Component {
         });
     }
 
+    // Receive user signup data
+    signupHandle(values){
+        console.log(values);
+    }
+
 
     render() {
         return (
@@ -60,7 +65,7 @@ class LoginAndSignup extends React.Component {
                                 <LoginForm loginHandle={this.loginHandle.bind(this)}/>
                             </TabPane>
                             <TabPane tab="Signup" key="2">
-                                <SignupForm/>
+                                <SignupForm signupHandel={this.signupHandle.bind(this)}/>
                             </TabPane>
                         </Tabs>
                     </Col>
