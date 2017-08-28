@@ -4,7 +4,8 @@
 import React from 'react'
 import {Button, message} from 'antd'
 import {
-    NavLink
+    Link,
+    withRouter
 } from 'react-router-dom'
 
 //setup redux
@@ -35,9 +36,9 @@ class ToDoList extends React.Component {
         if (listId) {
             let data = getSingleTodoList(listId);
             data.then(res => {
-                if(res.data.todoList){
+                if (res.data.todoList) {
                     this.setState({todoList: res.data.todoList.todoList})
-                }else {
+                } else {
                     message.error('Please refresh the page!')
                 }
 
@@ -74,7 +75,6 @@ class ToDoList extends React.Component {
         let {todoList} = this.state;
         let {listId} = this.props;
         let actions = this.props.todoListActions;
-        let _this = this;
         if (listId) { // if has listId then update todoList
             let updatedTodoList = {
                 todoListId: listId,
@@ -82,9 +82,9 @@ class ToDoList extends React.Component {
             };
             let updateData = updateTodoList(updatedTodoList);
             updateData.then(res => {
-                if(res.data.updateTodoList){
+                if (res.data.updateTodoList) {
                     actions.updateSingleTodoList(res.data.updateTodoList);
-                }else {
+                } else {
                     message.error('Please refresh the page!')
                 }
 
@@ -92,11 +92,9 @@ class ToDoList extends React.Component {
         } else if (todoList.length > 0) { // if dose not has listId then create new todo List
             let data = createTodoList(todoList);
             data.then(res => {
-                console.log(res);
-                if (res.data.createTodoList){
-                    console.log(res.data.createTodoList);
+                if (res.data.createTodoList) {
                     actions.addTodoList(res.data.createTodoList);
-                }else {
+                } else {
                     message.error('Please refresh the page!')
                 }
 
@@ -123,7 +121,7 @@ class ToDoList extends React.Component {
                 <AddTodo addTodoHandler={this.addTodoHandler.bind(this)}/>
                 {todoListView}
                 <Button onClick={() => this.todoListSubmit()}>
-                    <NavLink to="/account">Submit</NavLink>
+                    <Link to="/account">Submit</Link>
                 </Button>
             </div>
         )
@@ -141,7 +139,7 @@ function mapDispatchToProps(dispatch) {
         todoListActions: bindActionCreators(todoListActionsFromOtherFile, dispatch),
     }
 }
-export default connect(
+export default withRouter(connect(
     mapStateToProps,
     mapDispatchToProps
-)(ToDoList)
+)(ToDoList))

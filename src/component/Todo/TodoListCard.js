@@ -15,7 +15,6 @@ class TodoListCard extends React.Component {
         this.state = {
             todoListData: props.todoListData.todoList || []
         };
-        console.log(props);
     }
 
 

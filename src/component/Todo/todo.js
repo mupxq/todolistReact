@@ -10,18 +10,9 @@ class Todo extends React.Component {
         super(props, context);
         // get todo data from props
         this.state = {
-            todo: props.todoData
+            todo: props.todoData || {}
         }
     }
-
-    // componentWillReceiveProps(nextProps) {
-    //
-    //     if (this.props.todoData.completed !== nextProps.todoData.completed) {
-    //         console.log(nextProps.todoData.completed);
-    //         this.setState({todo: nextProps.todoData});
-    //     }
-    //
-    // }
 
     render() {
 

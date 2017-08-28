@@ -70,7 +70,7 @@ class Account extends React.Component {
     // }
 
     shouldComponentUpdate(nextProps, nextState){
-        if (JSON.stringify(this.props.todoList) != JSON.stringify(nextProps.todoList)){
+        if (JSON.stringify(this.props.todoList) !== JSON.stringify(nextProps.todoList)){
             return true;
         } else {
             return false;
@@ -79,7 +79,7 @@ class Account extends React.Component {
     render() {
 
         const {todoListData} = this.props.todoList;
-        console.log("parent", todoListData);
+
         const todoListCard = todoListData.length > 0
             ? todoListData.map((item, index) => (
                 <Col key={item.listId} span={8}>
