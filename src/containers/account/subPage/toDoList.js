@@ -3,12 +3,21 @@
  */
 import React from 'react'
 import {Button} from 'antd'
+import {
+    Link,
+} from 'react-router-dom'
+
+//setup redux
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
+import * as todoListActionsFromOtherFile from '../../../actions/todoList'
 
 //import components
 import AddTodo from '../../../component/Todo/addToDo'
 import Todo from '../../../component/Todo/todo'
 
-
+//import fetch API
+import {createTodoList} from '../../../fetch/TodoList/CreateTodoList'
 
 class ToDoList extends React.Component {
     constructor(props, context) {
@@ -43,7 +52,11 @@ class ToDoList extends React.Component {
     }
 
     todoListSubmit(){
-        console.log(this.state.todoList);
+        let data = createTodoList(this.state.todoList);
+        data.then(res => {
+            let actions = this.props.todoListActions;
+            actions.addTodoList(res.createTodoList);
+        })
     }
 
     render() {
@@ -61,10 +74,26 @@ class ToDoList extends React.Component {
             <div>
                 <AddTodo addTodoHandler={this.addTodoHandler.bind(this)}/>
                     {todoListView}
-                <Button onClick={() => this.todoListSubmit()} >Submit </Button>
+                <Button onClick={() => this.todoListSubmit()} >
+                    <Link to="/account">Submit</Link>
+                </Button>
             </div>
         )
     }
 }
 
-export default ToDoList
+function mapStateToProps(state) {
+    return {
+        todoList: state.todoList,
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        todoListActions: bindActionCreators(todoListActionsFromOtherFile, dispatch),
+    }
+}
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ToDoList)

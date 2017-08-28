@@ -4,7 +4,9 @@
 import {combineReducers} from 'redux'
 
 import userInfo from './userInfo'
+import todoList from './todoList'
 
 export default combineReducers({
-    userInfo
+    userInfo,
+    todoList
 });
