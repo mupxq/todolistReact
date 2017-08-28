@@ -8,7 +8,8 @@ http://54.157.25.244
 
 First, in the project src/constants directory edit URL.js 
 change the URL to your own API server's URL
- ```js
+
+```js
 export const GRAPHQL_URL = "http://54.157.25.244:8880/graphql";
 
 export const API_URL = "http://54.157.25.244:8880/";
