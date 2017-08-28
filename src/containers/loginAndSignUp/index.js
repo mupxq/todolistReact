@@ -20,6 +20,7 @@ import SignupForm from '../../component/Signup/index'
 
 //import fetch API
 import {login} from '../../fetch/User/Login';
+import {signup} from '../../fetch/User/Signup'
 
 const TabPane = Tabs.TabPane;
 
@@ -39,11 +40,14 @@ class LoginAndSignup extends React.Component {
         //post data to server
         let data = login(values);
         data.then(res => {
-            if (res.userLogin){
+            console.log(res);
+            if (res.data.userLogin){
                 // if login success then store the userEmail and userId in redux
-                action.updateUserInfo(res.userLogin);
-            }else {
+                action.updateUserInfo(res.data.userLogin);
+            }else if (res.errors) {
                 // if login is fail then print fail message
+               message.error(res.errors[0].message);
+            }else {
                 message.error('Login fail. Please try again!')
             }
         });
@@ -51,7 +55,22 @@ class LoginAndSignup extends React.Component {
 
     // Receive user signup data
     signupHandle(values){
-        console.log(values);
+        if (values.password === values.confirm){
+            let data = signup(values);
+            data.then(res => {
+                const action = this.props.userInfoActions;
+                if (res.data.signup){
+                    action.updateUserInfo(res.data.signup);
+                }else if(res.errors){
+                    message.error(res.errors[0].message);
+                }else {
+                    message.error('Signup fail. Please try again!')
+                }
+
+            });
+        }else {
+            message.error('Two password is not match!')
+        }
     }
 
 
@@ -65,7 +84,7 @@ class LoginAndSignup extends React.Component {
                                 <LoginForm loginHandle={this.loginHandle.bind(this)}/>
                             </TabPane>
                             <TabPane tab="Signup" key="2">
-                                <SignupForm signupHandel={this.signupHandle.bind(this)}/>
+                                <SignupForm signupHandle={this.signupHandle.bind(this)}/>
                             </TabPane>
                         </Tabs>
                     </Col>

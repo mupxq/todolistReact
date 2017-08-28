@@ -3,7 +3,10 @@
  */
 import * as actionTypes from '../constants/actionType/todoList'
 
-const initialState = {};
+const initialState = {
+    todoListData: [],
+    editStatus: 0
+};
 
 // todo list reducer
 export default function todoList(state = initialState, action) {
@@ -13,6 +16,7 @@ export default function todoList(state = initialState, action) {
                 state,
                 {todoListData: action.data});
         case actionTypes.TODOLIST_REMOVE:
+
             return {todoListData: state.todoListData.filter(item => (item.listId !== action.data))};
 
         case actionTypes.TODOLIST_ADD:
@@ -29,7 +33,8 @@ export default function todoList(state = initialState, action) {
                         item = action.data;
                     }
                     return item;
-                })
+                }),
+                editStatus: state.editStatus + 1
             };
         default:
             return state

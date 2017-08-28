@@ -4,16 +4,16 @@
 import {post} from '../post';
 
 //post the userEmail and password to server then get to the new user's id
-export function login(userEmail, password) {
+export function signup(values) {
     let query = `mutation($userEmail: String!, $password: String!){
-                    userLogin(userEmail: $userEmail, password: $password){
+                    signup(userEmail: $userEmail, password: $password){
                     userEmail,
                     userId
                         }
                     }`;
     let variables = {
-        "userEmail": userEmail,
-        "password": password
+        "userEmail": values.userEmail,
+        "password": values.password
     };
 
     let data = post(query, variables);

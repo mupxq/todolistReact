@@ -18,9 +18,6 @@ export function post(query, variables) {
     };
     //fetch the data then return the data with promise
     const data = fetch(GRAPHQL_URL, myFetchOptions).then(res => res.json())
-        .then(json => {
-            console.log(json);
-            return json.data;
-        });
+
     return data;
 }

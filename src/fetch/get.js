@@ -11,11 +11,8 @@ export function get(query) {
     };
 
     //fetch the data then return the data with promise
-    let result = fetch(GRAPHQL_URL+ '?query=' + query, myFetchOptions).then(res => res.json()).then(
-        json => {
-            return json.data
-        }
-    );
+    let result = fetch(GRAPHQL_URL+ '?query=' + query, myFetchOptions).then(res => res.json());
+
 
     return result;
 }

@@ -4,7 +4,7 @@
 import React from 'react'
 import {Button, message} from 'antd'
 import {
-    Link,
+    NavLink
 } from 'react-router-dom'
 
 //setup redux
@@ -31,10 +31,16 @@ class ToDoList extends React.Component {
 
     componentDidMount() {
         let {listId} = this.props;
+        // if has listId then fetch the todo List data
         if (listId) {
             let data = getSingleTodoList(listId);
             data.then(res => {
-                this.setState({todoList: res.todoList.todoList})
+                if(res.data.todoList){
+                    this.setState({todoList: res.data.todoList.todoList})
+                }else {
+                    message.error('Please refresh the page!')
+                }
+
             });
         }
     }
@@ -68,6 +74,7 @@ class ToDoList extends React.Component {
         let {todoList} = this.state;
         let {listId} = this.props;
         let actions = this.props.todoListActions;
+        let _this = this;
         if (listId) { // if has listId then update todoList
             let updatedTodoList = {
                 todoListId: listId,
@@ -75,13 +82,24 @@ class ToDoList extends React.Component {
             };
             let updateData = updateTodoList(updatedTodoList);
             updateData.then(res => {
-                actions.updateSingleTodoList(res.updateTodoList);
+                if(res.data.updateTodoList){
+                    actions.updateSingleTodoList(res.data.updateTodoList);
+                }else {
+                    message.error('Please refresh the page!')
+                }
+
             })
         } else if (todoList.length > 0) { // if dose not has listId then create new todo List
             let data = createTodoList(todoList);
             data.then(res => {
+                console.log(res);
+                if (res.data.createTodoList){
+                    console.log(res.data.createTodoList);
+                    actions.addTodoList(res.data.createTodoList);
+                }else {
+                    message.error('Please refresh the page!')
+                }
 
-                actions.addTodoList(res.createTodoList);
             })
         } else {
             message.error('The todo list is empty!')
@@ -105,7 +123,7 @@ class ToDoList extends React.Component {
                 <AddTodo addTodoHandler={this.addTodoHandler.bind(this)}/>
                 {todoListView}
                 <Button onClick={() => this.todoListSubmit()}>
-                    <Link to="/account">Submit</Link>
+                    <NavLink to="/account">Submit</NavLink>
                 </Button>
             </div>
         )

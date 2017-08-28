@@ -14,12 +14,21 @@ class Todo extends React.Component {
         }
     }
 
+    // componentWillReceiveProps(nextProps) {
+    //
+    //     if (this.props.todoData.completed !== nextProps.todoData.completed) {
+    //         console.log(nextProps.todoData.completed);
+    //         this.setState({todo: nextProps.todoData});
+    //     }
+    //
+    // }
+
     render() {
 
         const {todo} = this.state;
 
         return (
-            <li
+            <li key={todo.id}
                 style={{
                     textDecoration: todo.completed ? 'line-through' : 'none'
                 }}

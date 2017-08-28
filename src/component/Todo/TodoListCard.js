@@ -14,20 +14,21 @@ class TodoListCard extends React.Component {
         super(props, context);
         this.state = {
             todoListData: props.todoListData.todoList || []
-        }
+        };
+        console.log(props);
     }
+
+
+
 
     render() {
 
-        const {todoListData} = this.state;
+        const todoListData = this.props.todoListData.todoList;
 
 
         const todoListView = todoListData.length > 0
             ? todoListData.map((item, index) => (
-                <div key={index}>
-                    <Todo todoData={item}/>
-                </div>
-
+                    <Todo key={index} {...this.props} todoData={item}/>
             )) : undefined;
 
         const cardAction = <div>
@@ -39,8 +40,11 @@ class TodoListCard extends React.Component {
 
         return (
             <div>
-                <Card style={{width: 240}} bodyStyle={{padding: 0}} extra={cardAction}>
-                    {todoListView}
+                <Card style={{width: 240}} extra={cardAction}>
+                    <ul>
+                        {todoListView}
+                    </ul>
+
                 </Card>
             </div>
         )
