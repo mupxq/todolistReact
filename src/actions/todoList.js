@@ -22,4 +22,9 @@ export function addTodoList(data) {
         type: actionTypes.TODOLIST_ADD,
         data
     }
+}export function updateSingleTodoList(data) {
+    return {
+        type: actionTypes.SINGLETODOLIST_UPDATE,
+        data
+    }
 }

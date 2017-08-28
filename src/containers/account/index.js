@@ -22,6 +22,7 @@ import * as todoListActionsFromOtherFile from '../../actions/todoList'
 import TodoListCard from '../../component/Todo/TodoListCard'
 
 import {getTodoListData} from '../../fetch/TodoList/getToDoLists'
+import {deleteTodoList} from '../../fetch/TodoList/deleteTodoList'
 
 
 class Account extends React.Component {
@@ -33,12 +34,17 @@ class Account extends React.Component {
     componentDidMount() {
         let data = getTodoListData();
         data.then(res => {
-            console.log(res);
             let actions = this.props.todoListActions;
             actions.updateTodoList(res.todoListsQuery);
         });
+    }
 
-
+    deleteTodoList(listId){
+        let data = deleteTodoList(listId);
+        data.then(res => {
+            let actions = this.props.todoListActions;
+            actions.removeTodoList(res.deleteTodoList.todoListId);
+        })
     }
 
     render() {
@@ -47,7 +53,7 @@ class Account extends React.Component {
         const todoListCard = todoListData.length > 0
             ? todoListData.map((item, index) => (
                 <Col key={index} span={8}>
-                    <TodoListCard todoListData={item}/>
+                    <TodoListCard todoListData={item} deleteTodoList={this.deleteTodoList.bind(this)}/>
                 </Col>
             )) : undefined;
 

@@ -13,7 +13,8 @@ export default function todoList(state = initialState, action) {
                 state,
                 {todoListData: action.data});
         case actionTypes.TODOLIST_REMOVE:
-            return state.todoListData.filter(item => item.todoListId !== action.data);
+            return {todoListData: state.todoListData.filter(item => (item.listId !== action.data))};
+
         case actionTypes.TODOLIST_ADD:
             return Object.assign({}, state, {
                 todoListData: [
@@ -21,6 +22,15 @@ export default function todoList(state = initialState, action) {
                     action.data
                 ]
             });
+        case actionTypes.SINGLETODOLIST_UPDATE:
+            return {
+                todoListData: state.todoListData.map(item => {
+                    if (item.listId === action.data.listId){
+                        item = action.data;
+                    }
+                    return item;
+                })
+            };
         default:
             return state
     }

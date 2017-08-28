@@ -2,7 +2,7 @@
  * Created by mupxq on 8/27/17.
  */
 import React from 'react'
-import {Button} from 'antd'
+import {Button, message} from 'antd'
 import {
     Link,
 } from 'react-router-dom'
@@ -18,6 +18,8 @@ import Todo from '../../../component/Todo/todo'
 
 //import fetch API
 import {createTodoList} from '../../../fetch/TodoList/CreateTodoList'
+import {getSingleTodoList} from '../../../fetch/TodoList/getSingleTodoList'
+import {updateTodoList} from '../../../fetch/TodoList/updateTodoList'
 
 class ToDoList extends React.Component {
     constructor(props, context) {
@@ -26,6 +28,17 @@ class ToDoList extends React.Component {
             todoList: []
         }
     }
+
+    componentDidMount() {
+        let {listId} = this.props;
+        if (listId) {
+            let data = getSingleTodoList(listId);
+            data.then(res => {
+                this.setState({todoList: res.todoList.todoList})
+            });
+        }
+    }
+
     // set new todo List to state
     addTodoHandler(values) {
         let {todoList} = this.state;
@@ -51,12 +64,29 @@ class ToDoList extends React.Component {
         this.setState({todoList: newTodoList});
     }
 
-    todoListSubmit(){
-        let data = createTodoList(this.state.todoList);
-        data.then(res => {
-            let actions = this.props.todoListActions;
-            actions.addTodoList(res.createTodoList);
-        })
+    todoListSubmit() {
+        let {todoList} = this.state;
+        let {listId} = this.props;
+        let actions = this.props.todoListActions;
+        if (listId) { // if has listId then update todoList
+            let updatedTodoList = {
+                todoListId: listId,
+                todoList: todoList
+            };
+            let updateData = updateTodoList(updatedTodoList);
+            updateData.then(res => {
+                actions.updateSingleTodoList(res.updateTodoList);
+            })
+        } else if (todoList.length > 0) { // if dose not has listId then create new todo List
+            let data = createTodoList(todoList);
+            data.then(res => {
+
+                actions.addTodoList(res.createTodoList);
+            })
+        } else {
+            message.error('The todo list is empty!')
+        }
+
     }
 
     render() {
@@ -66,15 +96,15 @@ class ToDoList extends React.Component {
             ? todoList.map((item, index) => (
                 <div key={index} onClick={() => this.toggleTodo(item.id)}>
                     <Todo
-                          todoData={item}
+                        todoData={item}
                     />
                 </div>
             )) : undefined;
         return (
             <div>
                 <AddTodo addTodoHandler={this.addTodoHandler.bind(this)}/>
-                    {todoListView}
-                <Button onClick={() => this.todoListSubmit()} >
+                {todoListView}
+                <Button onClick={() => this.todoListSubmit()}>
                     <Link to="/account">Submit</Link>
                 </Button>
             </div>
