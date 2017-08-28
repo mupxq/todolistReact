@@ -5,7 +5,6 @@ import React from 'react';
 import {
     BrowserRouter,
     Route,
-    Link,
     Redirect
 } from 'react-router-dom'
 

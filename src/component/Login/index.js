@@ -21,7 +21,7 @@ class LoginForm extends React.Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 // submit the userEmail and password to the LoginAndSignup container
-                this.props.loginHandle (values.username, values.password);
+                this.props.loginHandle (values);
             }
 
 
@@ -34,7 +34,7 @@ class LoginForm extends React.Component {
         return (
             <Form onSubmit={this.handleSubmit.bind(this)} className="login-form">
                 <FormItem>
-                    {getFieldDecorator('username', {
+                    {getFieldDecorator('userEmail', {
                         rules: [{required: true, message: 'Please input your Email!'}],
                     })(
                         <Input prefix={<Icon type="user" style={{fontSize: 13}}/>} placeholder="Username"/>

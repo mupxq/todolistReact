@@ -5,10 +5,21 @@ import React from 'react'
 import {
     Tabs,
     Row,
-    Col
+    Col,
+    message
 } from 'antd';
+
+//setup redux
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as userInfoActionsFromOtherFile from '../../actions/userInfo';
+
 //import component
 import LoginForm from '../../component/Login/index';
+import SignupForm from '../../component/Signup/index'
+
+//import fetch API
+import {login} from '../../fetch/User/Login';
 
 const TabPane = Tabs.TabPane;
 
@@ -19,22 +30,38 @@ function callback(key) {
 }
 
 class LoginAndSignup extends React.Component {
-    // constructor(props, context) {
-    //     super(props, context);
-    //     // this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-    // }
+
+
+    // Receive user data
+    loginHandle(values){
+        const action = this.props.userInfoActions;
+
+        //post data to server
+        let data = login(values);
+        data.then(res => {
+            if (res.userLogin){
+                // if login success then store the userEmail and userId in redux
+                action.updateUserInfo(res.userLogin);
+            }else {
+                // if login is fail then print fail message
+                message.error('Login fail. Please try again!')
+            }
+        });
+    }
 
 
     render() {
         return (
             <div>
                 <Row justify="center" align="middle">
-                    <Col offset={9} span={6}>
+                    <Col offset={8} span={8}>
                         <Tabs defaultActiveKey="1" onChange={callback}>
                             <TabPane tab="Login" key="1">
-                                <LoginForm/>
+                                <LoginForm loginHandle={this.loginHandle.bind(this)}/>
                             </TabPane>
-                            <TabPane tab="Signup" key="2">Content of Tab Pane 2</TabPane>
+                            <TabPane tab="Signup" key="2">
+                                <SignupForm/>
+                            </TabPane>
                         </Tabs>
                     </Col>
                 </Row>
@@ -43,4 +70,21 @@ class LoginAndSignup extends React.Component {
     }
 }
 
-export default LoginAndSignup
+
+// -------------------redux react --------------------
+
+function mapStateToProps(state) {
+    return {
+        userInfo: state.userInfo
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        userInfoActions: bindActionCreators(userInfoActionsFromOtherFile, dispatch)
+    }
+}
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(LoginAndSignup)

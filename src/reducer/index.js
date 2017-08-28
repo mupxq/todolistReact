@@ -3,8 +3,8 @@
  */
 import {combineReducers} from 'redux'
 
-import indexTest from './test'
+import userInfo from './userInfo'
 
 export default combineReducers({
-    indexTest
+    userInfo
 });
